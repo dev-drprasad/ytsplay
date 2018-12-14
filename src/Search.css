@@ -1,0 +1,16 @@
+.Search {
+  background-color: #ffffff;
+  height: 100%;
+  /* margin-top: calc(100vh - 400px); */
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: column;
+}
+
+.Movies {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+}
+
+
+/* https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space */

@@ -1,0 +1,44 @@
+.Login {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.Login .InputGroup {
+  display: flex;
+  align-items: center;
+  background-color: #ebf0f7;
+  color: #999999;
+}
+
+.Login .InputGroup svg {
+  margin-left: 10px;
+}
+
+.Login .InputGroup input[name="password"] {
+  width: 100%;
+  background-color: #ebf0f7;
+  font-size: 18px;
+  border: none;
+  padding: 10px;
+}
+
+.Login button[type="submit"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px;
+  border: none;
+  background-color: #42BCF5;
+  color: #ffffff;
+  margin-top: 5px;
+}
+
+.Login .InputGroup button[type="submit"] svg {
+  margin-left: 5px;
+}
+

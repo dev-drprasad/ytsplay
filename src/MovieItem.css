@@ -1,0 +1,26 @@
+.MovieItem {
+  display: grid;
+  grid-template-columns: 45px auto;
+  grid-template-rows: 1.3em auto;
+  grid-column-gap: 15px;
+  grid-template-areas:
+    "image name"
+    "image year";
+  padding: 15px;
+  border-bottom: 1px solid #F7F9FC;
+}
+
+.Name {
+  grid-area: name;
+  color: #384B4C;
+}
+
+.Year {
+  grid-area: year;
+  color: #98B8C6;
+}
+
+.Image {
+  grid-area: image;
+  height: 67px;
+}

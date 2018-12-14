@@ -1,0 +1,107 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, button, input, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+input, button {
+	outline: 0;
+	border: 0;
+	background: none;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+body {
+	line-height: 1;
+	font-family: 'Open Sans', sans-serif;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.show {
+	display: block;
+}
+
+.hide {
+	display: none;
+}
+
+input::-moz-placeholder{
+	color:#999;
+	opacity:1
+}
+
+input:-ms-input-placeholder{
+	color:#999
+}
+
+input::-webkit-input-placeholder{
+	color:#999
+}
+
+.slide-up {
+	transform: translateY(0%);
+	animation: slide-up 0.5s forwards;
+}
+
+.slide-down {
+	transform: translateY(100%);
+	animation: slide-down 0.5s forwards;
+}
+
+@keyframes slide-up {
+	0% { transform: translateY(100%); }
+	100% { transform: translateY(0%); }
+}
+
+@keyframes slide-down {
+	0% { transform: translateY(0%); }
+	100% { transform: translateY(100%); }
+}
+
+@keyframes disappear {
+	0% { visibility: visible }
+	100% { visibility: hidden }
+}
