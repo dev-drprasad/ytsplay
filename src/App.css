@@ -1,7 +1,6 @@
 .App {
   background-color: #F7F9FC;
   height: 100vh;
-  padding: 15px;
 }
 
 .DownloadList {
@@ -27,7 +26,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #ffffff;
 }
 
 @keyframes App-logo-spin {

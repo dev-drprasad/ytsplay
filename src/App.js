@@ -6,12 +6,9 @@ import AddTorrentButton from './AddTorrentButton';
 import Login from './Login';
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(() => {
-    const cookieMatch = document.cookie.match(/_session_id=\w+/);
-    return Boolean(cookieMatch);
-  });
+  const [loggedIn, setLoggedIn] = useState(() => !!document.cookie.match(/_session_id=\w+/));
   const [torrents, setTorrents] = useState([]);
-  const [isSearchModalOpen, setSearchModalOpen] = useState(false); 
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
   useEffect(() => {
     if (!loggedIn) return;
@@ -26,13 +23,13 @@ const App = () => {
         })
         .then((data) => {
           console.log('data :', data);
-          // result.torrents will null when daemon is not running 
-          if (!data.error) {
-            setTorrents(Object.values(data.result.torrents || []));
-          } else {
+          if (data.error) {
             // Not authenticated
             if (data.error.code === 1) setLoggedIn(false);
           }
+          
+          // result.torrents will null when daemon is not running 
+          setTorrents(Object.values(data.result.torrents || []));
         })
         .catch((error) => {
           setTorrents([]);
@@ -58,8 +55,8 @@ const App = () => {
               ))
             }
           </ul>
-          <AddTorrentButton onClick={() => setSearchModalOpen(true)} />
-          <SearchModal isOpen={isSearchModalOpen} onClose={() => setSearchModalOpen(false)} />
+          <AddTorrentButton onClick={() => setShowSearchModal(true)} />
+          <SearchModal isOpen={showSearchModal} onClose={() => setShowSearchModal(false)} />
         </>
       ) : (
         <Login onLogIn={setLoggedIn} />

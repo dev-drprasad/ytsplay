@@ -9,8 +9,8 @@
 .SearchBox .InputGroup button[type="submit"] {
   position: absolute;
   right: 0;
-  background-color: #42BCF5;
   margin: 4px;
+  background-color: #42BCF5;
   height: 36px;
   width: 36px;
   color: #F7F9FC;

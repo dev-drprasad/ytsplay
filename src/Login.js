@@ -34,10 +34,10 @@ const Login = ({ onLogIn }) => {
     <div className="Login">
       <form action="get" onSubmit={handleFormSubmit}>
         <div className="InputGroup">
-        <LockIcon size={20} />
-        <input type="password" name="password" placeholder="Password" id="password"/>
+          <LockIcon size={16} />
+          <input type="password" name="password" placeholder="Password" id="password"/>
+          <button type="submit" name="submit" value="Login"><ArrowRightIcon size={22} /></button>
         </div>
-        <button type="submit" name="submit" value="Login">Let's watch <ArrowRightIcon size={22} /></button>
       </form>
     </div>
   );

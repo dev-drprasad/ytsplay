@@ -43,6 +43,7 @@ input, button {
 body {
 	line-height: 1;
 	font-family: 'Open Sans', sans-serif;
+	max-height: 100vh;
 }
 ol, ul {
 	list-style: none;
@@ -69,16 +70,16 @@ table {
 }
 
 input::-moz-placeholder{
-	color:#999;
-	opacity:1
+	color:#a7a7a7;
+	opacity:1;
 }
 
 input:-ms-input-placeholder{
-	color:#999
+	color:#a7a7a7;
 }
 
 input::-webkit-input-placeholder{
-	color:#999
+	color:#a7a7a7;
 }
 
 .slide-up {
