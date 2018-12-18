@@ -6,7 +6,7 @@ const SearchModal = ({ isOpen, onClose }) => {
   
   return (
     <Modal isOpen={isOpen} onClose={onClose} >
-      {isOpen && <Search />}
+      <Search />
     </Modal>
   );
 };

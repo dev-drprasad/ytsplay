@@ -11,7 +11,7 @@ const Login = ({ onLogIn }) => {
     event.preventDefault();
     const password = event.target.elements.password.value;
     if (password) {
-      const loginUrl = new URL('/api/login');
+      const loginUrl = '/api/login';
       fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -25,7 +25,7 @@ const Login = ({ onLogIn }) => {
           const cookieMatch = json.cookie.match(/_session_id=\w+/);
           if (cookieMatch) {
             [document.cookie, ] = cookieMatch;
-            onLogIn(true);
+            onLogIn();
           }
         })
     }

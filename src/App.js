@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './App.css';
-import ListItem from './ListItem';
 import SearchModal from './SearchModal';
 import AddTorrentButton from './AddTorrentButton';
 import Login from './Login';
+import DownloadList from './DownloadList';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(() => !!document.cookie.match(/_session_id=\w+/));
@@ -45,21 +45,12 @@ const App = () => {
       {loggedIn
       ? (
         <>
-          <ul className="DownloadList">
-            {torrents.map((torrent) => (
-              <ListItem
-                name={torrent.name}
-                status={torrent.state}
-                progress={torrent.progress}
-              />
-              ))
-            }
-          </ul>
+          <DownloadList torrents={torrents} />
           <AddTorrentButton onClick={() => setShowSearchModal(true)} />
           <SearchModal isOpen={showSearchModal} onClose={() => setShowSearchModal(false)} />
         </>
       ) : (
-        <Login onLogIn={setLoggedIn} />
+        <Login onLogIn={() => setLoggedIn(true)} />
       )}
     </div>
   );

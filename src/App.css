@@ -3,12 +3,6 @@
   height: 100vh;
 }
 
-.DownloadList {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
