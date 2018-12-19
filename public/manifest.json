@@ -1,6 +1,6 @@
 {
   "short_name": "ytsdl",
-  "name": "Download YiFY Movies using Deluge",
+  "name": "ytsdl",
   "icons": [
     {
       "src": "logo.png",
