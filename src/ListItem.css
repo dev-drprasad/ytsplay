@@ -17,9 +17,20 @@ h3 {
   overflow-x: hidden;
 }
 
-.status {
+.Status {
   grid-area: status;
   justify-self: center;
+}
+
+.ListItem .Status svg[title="pause"] {
+  color: #42BCF5;
+  background-color: #e3f5fe;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+.ListItem .Status svg[title="check"] {
+  color: #2BA84A;
 }
 
 .progress {

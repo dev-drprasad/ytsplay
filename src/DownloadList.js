@@ -1,6 +1,8 @@
 import React from 'react';
 import ListItem from './ListItem';
 
+import './DownloadList.css';
+
 const DownloadList = ({ torrents }) => (
   <ul className="DownloadList">
     {torrents.map((torrent) => (
