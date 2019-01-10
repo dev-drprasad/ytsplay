@@ -18,6 +18,9 @@ const Search = () => {
     .then((response) => response.json())
     .then((data) => {
       console.log('data :', data);
+    })
+    .catch((err) => {
+      console.log('err :', err);
     });
   }
 
@@ -34,6 +37,7 @@ const Search = () => {
     .then((data) => {
       console.log('data :', data);
       setMovies(data);
+      setLoading(false);
     })
     .catch(error => {
       setMovies([]);

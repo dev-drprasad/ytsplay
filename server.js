@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
 
 const changeHost = (url) => {
   const urlObject = new URL(url);
-  return `http://localhost:8080${urlObject.pathname}`;
+  return urlObject.pathname;
 }
 
 app.get('/api/search', function(req, res) {
@@ -43,7 +43,7 @@ app.get('/api/search', function(req, res) {
   fetch(searchUrl.toString())
     .then((ytsResponse) =>  ytsResponse.json())
     .then((jsonResponse) => {
-      res.json(jsonResponse.data.map(({ title, url, year, img }) => ({ name: title, url, year, imageUrl: changeHost(img) })));
+      res.json((jsonResponse.data || []).map(({ title, url, year, img }) => ({ name: title, url, year, imageUrl: changeHost(img) })));
     })
     .catch((err) => {
       console.log(err);

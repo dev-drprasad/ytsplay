@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, height, children }) => {
   const modalEl = useRef(null);
   const handleCoverClick = (e) => {
     if (e.target.hasAttribute('modal')) {
@@ -31,13 +31,20 @@ const Modal = ({ isOpen, onClose, children }) => {
     <>
       {console.log('modalEl.current ', modalEl.current)}
       <div className={`ModalCover ${isOpen ? 'show' : 'hide'}`} onClick={handleCoverClick} modal="true"></div>
-      <div className={`ModalContainer ${!modalEl.current ? 'hide' : ''} ${isOpen ? 'slide-up' : 'slide-down'}`} ref={modalEl}>
+      <div
+        className={`ModalContainer ${!modalEl.current ? 'hide' : ''} ${isOpen ? 'slide-up' : 'slide-down'}`}
+        style={{ height, marginTop: `calc(100vh - ${height}px)`}}
+        ref={modalEl}
+      >
         {children}
       </div>
     </>,
   document.body);
 };
 
-const shouldMemo = (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen;
+const shouldMemo = (prevProps, nextProps) => (
+  prevProps.isOpen === nextProps.isOpen &&
+  prevProps.height === nextProps.height
+);
 
 export default memo(Modal, shouldMemo);
