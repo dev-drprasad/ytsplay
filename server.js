@@ -4,6 +4,8 @@ const cheerio = require('cheerio');
 const fetch = require('node-fetch');
 const app = express();
 
+const DELUGE_UI_URL = `http://localhost:${process.env.DELUGE_UI_PORT || 8112}/json`;
+
 app.use(express.json()) ;
 
 app.use(function(req, res, next) {
@@ -67,7 +69,7 @@ app.get('/api/add', (req, res) => {
       if (!magnetLink) res.json({ error: true });
 
       console.log('magnetLink :', magnetLink);
-      fetch('http://localhost:8112/json', {
+      fetch(DELUGE_UI_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +95,7 @@ app.get('/api/list', function(req, res) {
 
   const cookieMatch = req.headers.cookie && req.headers.cookie.match(/_session_id=\w+/);
   if (cookieMatch) {
-    fetch('http://localhost:8112/json', {
+    fetch(DELUGE_UI_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -116,7 +118,7 @@ app.get('/api/list', function(req, res) {
 app.post('/api/login', (req, res) => {
   const password = req.body.password;
   let cookie = null;
-  fetch('http://localhost:8112/json', {
+  fetch(DELUGE_UI_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
