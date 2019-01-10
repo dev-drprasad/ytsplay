@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const fetch = require('node-fetch');
 const app = express();
 
-const DELUGE_UI_URL = `http://localhost:${process.env.DELUGE_UI_PORT || 8112}/json`;
+const DELUGE_UI_URL = `http://${process.env.DELUGE_UI_HOST || 'localhost:8112'}/json`;
 
 app.use(express.json()) ;
 
