@@ -1,4 +1,4 @@
-FROM node:lts-jessie
+FROM node:lts-alpine
 
 WORKDIR /app
 ENV NODE_ENV=production
