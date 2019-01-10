@@ -145,4 +145,6 @@ app.get('/assets/*', (req, res) => {
     .then(response => response.body.pipe(res))
 });
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080, () => {
+  console.log('app started.');
+});
