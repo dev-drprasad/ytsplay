@@ -69,6 +69,14 @@ table {
 	display: none;
 }
 
+.visible {
+	visibility: visible;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
 input::-moz-placeholder{
 	color:#a7a7a7;
 	opacity:1;

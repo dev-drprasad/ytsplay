@@ -14,7 +14,7 @@ const SearchBox = ({onSearchInput}) => {
 
   useEffect(() => {
     if (inputEl.current) inputEl.current.focus();
-  });
+  }, []);
 
   return (
     <form className="SearchBox" action="#" method="get" autoComplete="off" onSubmit={handleFormSubmit}>
