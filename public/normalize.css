@@ -90,6 +90,14 @@ input::-webkit-input-placeholder{
 	color:#a7a7a7;
 }
 
+/* remove yellow background for input */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 100px white inset !important;
+}
+
 .slide-up {
 	transform: translateY(0%);
 	animation: slide-up 0.5s forwards;
