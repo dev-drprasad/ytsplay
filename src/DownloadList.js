@@ -7,6 +7,7 @@ const DownloadList = ({ torrents }) => (
   <ul className="DownloadList">
     {torrents.map((torrent) => (
       <ListItem
+        key={torrent.hash}
         name={torrent.name}
         status={torrent.state}
         progress={torrent.progress}

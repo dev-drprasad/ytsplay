@@ -1,4 +1,6 @@
 import React, { useState} from 'react';
+import { useYTSSearch } from './hooks';
+
 import MovieItem from './MovieItem';
 import MoviePlaceholder from './MoviePlaceholder';
 import SearchBox from './SearchBox';
@@ -7,8 +9,8 @@ import './SearchBox.css';
 import './Search.css';
 
 const Search = () => {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState(null);
+  const {data: movies, status} = useYTSSearch(query);
 
   const handleMovieClick = (url) => {
     const searchParams = new URLSearchParams();
@@ -24,32 +26,16 @@ const Search = () => {
     });
   }
 
-  const fetchSuggestions = (query) => {
-    setLoading(true);
-    const searchParams = new URLSearchParams();
-    searchParams.append('query', query);
-    const searchUrl = `/api/search?${searchParams.toString()}`;
-    fetch(searchUrl)
-    .then((response) => {
-      if (!response.ok) throw Error(response.statusText);
-      return response.json();
-    })
-    .then((data) => {
-      console.log('data :', data);
-      setMovies(data);
-      setLoading(false);
-    })
-    .catch(error => {
-      setMovies([]);
-      setLoading(false);
-    });
-  }
+  const fetchSuggestions = (query) => void setQuery(query);
+
+  console.log('movies :', movies);
+
   return (
     <div className="Search">
       <SearchBox onSearchInput={fetchSuggestions} />
       <ul className="Movies">
-        {loading && <><MoviePlaceholder /><MoviePlaceholder /><MoviePlaceholder /></>}
-        {!loading && movies.map((movie) => (
+        {status === 'LOADING' && <><MoviePlaceholder /><MoviePlaceholder /><MoviePlaceholder /></>}
+        {status === 'SUCCESS' && movies.map((movie) => (
           <MovieItem
             name={movie.name}
             imageUrl={movie.imageUrl}

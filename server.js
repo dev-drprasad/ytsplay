@@ -103,7 +103,7 @@ app.get('/api/list', function(req, res) {
       },
       body: JSON.stringify({
         method: 'web.update_ui',
-        params: [["name", "progress", "state", "num_seeds"], {}],
+        params: [["name", "progress", "state", "num_seeds", "hash"], {}],
         id: 4,
       }),
     })

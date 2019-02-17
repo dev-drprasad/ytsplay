@@ -11,8 +11,8 @@ const ListItem = ({ name, status, progress }) => (
     <h3>{name}</h3>
     <ProgressBar percentage={progress} />
     <div className="Status">
-      {(status === 'Downloading' || status === 'Queued') &&<PauseIcon title="pause" size={34} />}
-      {status === 'Seeding' &&<CheckIcon title="check" size={30} />}
+      {(status === 'Downloading') &&<PauseIcon title="pause" size={34} />}
+      {(status === 'Seeding'|| status === 'Queued') &&<CheckIcon title="check" size={30} />}
       {status === 'Paused' &&<PlayIcon size={30} />}
     </div>
   </li>
