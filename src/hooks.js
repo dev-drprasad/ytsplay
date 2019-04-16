@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 
-export const useYTSSearch = ( query) => {
+export const useYTSSearch = ({query, type }) => {
   const [request, setRequest] = useState({ data: [], status: 'INIT' });
   
   useEffect(() => {
-    if (query) {
+    if (query && type) {
       setRequest({ ...request, status: 'LOADING' });
       const searchParams = new URLSearchParams();
       searchParams.append('query', query);
+      searchParams.append('type', type);
       const searchUrl = `/api/search?${searchParams.toString()}`;
       fetch(searchUrl)
       .then((response) => {
@@ -23,7 +24,7 @@ export const useYTSSearch = ( query) => {
         setRequest({ ...request, data: [], status: 'ERROR' });
       });
     }
-  }, [query]);
+  }, [query, type]);
 
   return request;
 }

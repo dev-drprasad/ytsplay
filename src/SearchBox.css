@@ -2,11 +2,24 @@
   padding: 15px;
 }
 
-.SearchBox .InputGroup {
-  position: relative;
+.SearchBox .TextInputGroup {
+    position: relative;
 }
 
-.SearchBox .InputGroup button[type="submit"] {
+.SearchBox .RadioGroup {
+  padding: 10px;
+  text-align: center;
+}
+
+.SearchBox .RadioGroup label {
+  margin: 0 15px;
+}
+
+.SearchBox .RadioGroup label input[type="radio"] {
+  margin-right: 5px;
+}
+
+.SearchBox .TextInputGroup button[type="submit"] {
   position: absolute;
   right: 0;
   margin: 4px;

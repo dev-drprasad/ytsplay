@@ -9,7 +9,7 @@ import './SearchBox.css';
 import './Search.css';
 
 const Search = () => {
-  const [query, setQuery] = useState(null);
+  const [query, setQuery] = useState({ query: null, type: 'movies' });
   const {data: movies, status} = useYTSSearch(query);
 
   const handleMovieClick = (url) => {
@@ -27,8 +27,6 @@ const Search = () => {
   }
 
   const fetchSuggestions = (query) => void setQuery(query);
-
-  console.log('movies :', movies);
 
   return (
     <div className="Search">

@@ -6,9 +6,10 @@ const SearchBox = ({onSearchInput}) => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    const val = event.target.elements.query.value;
-    if (val) {
-      onSearchInput(val);
+    const searchTerm = event.target.elements.query.value;
+    const type = event.target.elements.type.value;
+    if (searchTerm && type) {
+      onSearchInput({ query: searchTerm, type });
     }
   };
 
@@ -18,10 +19,21 @@ const SearchBox = ({onSearchInput}) => {
 
   return (
     <form className="SearchBox" action="#" method="get" autoComplete="off" onSubmit={handleFormSubmit}>
-      <div className="InputGroup">
+      <div className="TextInputGroup">
         <input type="text" name="query" id="query" ref={inputEl} />
         <button type="submit"><SearchIcon size={20} /></button>
       </div>
+      <div className="RadioGroup">
+        <label>
+          <input type="radio" name="type" value="movies" defaultChecked/>
+          Movies
+        </label>
+        <label>
+          <input type="radio" name="type" value="shows" />
+          TV Shows
+        </label>
+      </div>
+
     </form>
   );
 };
