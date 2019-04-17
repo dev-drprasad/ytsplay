@@ -28,33 +28,87 @@ app.get('/', function (req, res) {
 });
 
 const changeHost = (url) => {
+  if (!url) return null
+
   const urlObject = new URL(url);
   return urlObject.pathname;
 }
 
 app.get('/api/search', function(req, res) {
   const query = req.query.query || null;
+  const type = req.query.type || 'movies';
   if (!query) {
     return res.json([]);
   }
 
-  const searchUrl = new URL('https://yts.am/ajax/search');
-  searchUrl.searchParams.append('query', query);
-  fetch(searchUrl.toString())
-    .then((ytsResponse) =>  ytsResponse.json())
-    .then((jsonResponse) => {
-      res.json((jsonResponse.data || []).map(({ title, url, year, img }) => ({ name: title, url, year, imageUrl: changeHost(img) })));
+  if (type === 'shows') {
+    const searchUrl = new URL('http://ytsyify.cc');
+    searchUrl.searchParams.append('s', query);
+    fetch(searchUrl.toString())
+      .then((response) => response.text())
+      .then((html) => {
+        const $ = cheerio.load(html);
+        const searchListElems = $('.main-content .movies-list div[data-movie-id] > a')
+        const searchList =  searchListElems.map((_, el) => {
+          const $el = $(el);
+          console.log('$el.find("img") :', $el.find("img"));
+          return {
+            name: $el.attr('oldtitle'),
+            url: $el.attr('href'),
+            year: null,
+            imageUrl: changeHost($el.children('img').attr('data-original').trim())
+          }
+        }).get().filter(({ url }) => url.match(/\/series\//));
+
+        res.json(searchList)
+      });
+  }
+
+  if (type === 'movies') {
+    const searchUrl = new URL('https://yts.am/ajax/search');
+    searchUrl.searchParams.append('query', query);
+    fetch(searchUrl.toString())
+      .then((ytsResponse) =>  ytsResponse.json())
+      .then((jsonResponse) => {
+        res.json((jsonResponse.data || []).map(({ title, url, year, img }) => ({ name: title, url, year, imageUrl: changeHost(img) })));
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json([]);
+      });
+  }
+});
+
+app.get('/api/show', (req, res) => {
+  const url = req.query.url;
+
+  if (!url) {
+    return res.json({error: true });
+  }
+
+  fetch(url)
+    .then((response) =>  response.text())
+    .then((html) => {
+      const $ = cheerio.load(html);
+      const episodeList = $('#seasons .tvseason .les-content > a').map((_, el) => {
+        const $el = $(el);
+        return {
+          title: $el.text().trim(),
+          url: $el.attr('href')
+        }
+      }).get();
+      
+      res.json(episodeList)
+
     })
-    .catch((err) => {
-      console.log(err);
-      res.json([]);
-    });
+    .catch((err) => res.json({ error: true, message: err.message }));
 });
 
 app.get('/api/add', (req, res) => {
   const url = req.query.url;
+  const type = req.query.type;
   if (!url) {
-    return res.json({error: true });
+    return res.json({error: {message: 'no URL present'} });
   }
   
   const cookieMatch = req.headers.cookie && req.headers.cookie.match(/_session_id=\w+/);
@@ -62,11 +116,31 @@ app.get('/api/add', (req, res) => {
 
   fetch(url)
     .then((ytsResponse) =>  ytsResponse.text())
-    .then((body) => {
-      const $ = cheerio.load(body);
-      const magnetLink = $('#modal-quality-720p ~ a.magnet').first().attr('href');
+    .then((html) => {
+      const $ = cheerio.load(html);
+
+      let magnetLink = null;
+      if (type === 'movies') {
+        magnetLink = $('#modal-quality-720p ~ a.magnet').first().attr('href');
+      }
+
+      if (type === 'shows') {
+        const [el720p] = $('#list-dl .lnk-lnk').filter((_, el) => $(el).text().trim().includes('720p')).get() || []
+        if (el720p) {
+          magnetLink = $(el720p).attr('href');
+        } else {
+          const [firstMagnetEl] = $('#list-dl .lnk-lnk').filter((_, el) => $(el).text().trim().includes('Magnet')).get() || []
+          if (firstMagnetEl) {
+            magnetLink = $(firstMagnetEl).attr('href');
+          }
+        }
+      }
       
-      if (!magnetLink) res.json({ error: true });
+      if (!magnetLink) {
+        res.json({ error: { message: 'No magnet link present '} })
+        return;
+      };
+      
 
       console.log('magnetLink :', magnetLink);
       fetch(DELUGE_UI_URL, {
@@ -144,6 +218,12 @@ app.post('/api/login', (req, res) => {
 app.get('/assets/*', (req, res) => {
   res.type('image/jpeg');
   fetch(`https://img.yts.am${req.path}`)
+    .then(response => response.body.pipe(res))
+});
+
+app.get('/t/p/*', (req, res) => {
+  res.type('image/jpeg');
+  fetch(`https://image.tmdb.org${req.path}`)
     .then(response => response.body.pipe(res))
 });
 
