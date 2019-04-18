@@ -51,7 +51,6 @@ app.get('/api/search', function(req, res) {
         const searchListElems = $('.main-content .movies-list div[data-movie-id] > a')
         const searchList =  searchListElems.map((_, el) => {
           const $el = $(el);
-          console.log('$el.find("img") :', $el.find("img"));
           return {
             name: $el.attr('oldtitle'),
             url: $el.attr('href'),
@@ -90,13 +89,17 @@ app.get('/api/show', (req, res) => {
     .then((response) =>  response.text())
     .then((html) => {
       const $ = cheerio.load(html);
-      const episodeList = $('#seasons .tvseason .les-content > a').map((_, el) => {
-        const $el = $(el);
-        return {
-          title: $el.text().trim(),
-          url: $el.attr('href')
-        }
-      }).get();
+      const episodeList = [];
+      $('#seasons .tvseason').each((_, el) => {
+        const seasonNo = $(el).find('.les-title strong').text().trim();
+        $(el).find('.les-content > a').each((_, el) => {
+          const $el = $(el);
+          episodeList.push( {
+            title: seasonNo + ' ' + $el.text().trim(),
+            url: $el.attr('href')
+          })
+        });
+      })
       
       res.json(episodeList)
 
@@ -141,7 +144,9 @@ app.get('/api/add', (req, res) => {
         return;
       };
       
-
+      if (magnetLink.startsWith('http')) {
+        magnetLink = new URL(magnetLink).toString();
+      }
       console.log('magnetLink :', magnetLink);
       fetch(DELUGE_UI_URL, {
         method: 'POST',
@@ -205,7 +210,6 @@ app.post('/api/login', (req, res) => {
     }),
   })
     .then((delugeResponse) => {
-      console.log('delugeResponse.headers :', delugeResponse.headers);
       cookie = delugeResponse.headers.get('Set-Cookie');
       return delugeResponse.json()
     })

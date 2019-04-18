@@ -19,7 +19,7 @@ const SearchModal = ({ isOpen, onClose }) => {
   
   return (
     <Modal isOpen={isOpen} onClose={onClose} height={viewportHeight < 400 ? viewportHeight : 400 }>
-      <Search />
+      <Search onSuccessAdd={onClose} />
     </Modal>
   );
 };

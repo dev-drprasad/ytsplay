@@ -12,5 +12,11 @@
   overflow-y: auto;
 }
 
+.ShowDetail {
+  overflow-y: scroll;
+}
+.ShowDetail .EpisodeList li {
+  padding: 15px;
+}
 
 /* https://stackoverflow.com/questions/90178/make-a-div-fill-the-height-of-the-remaining-screen-space */
