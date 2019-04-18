@@ -33,7 +33,6 @@ const Modal = ({ isOpen, onClose, height, children }) => {
       <div className={`ModalCover ${isOpen ? 'show' : 'hide'}`} onClick={handleCoverClick} modal="true" />
       <div
         className={`ModalContainer ${_isOpen ? 'slide-up' : 'slide-down'}`}
-        style={{ height, marginTop: `calc(100vh - ${height}px)`}}
         ref={modalEl}
       >
         {children}

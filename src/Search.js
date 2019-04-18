@@ -30,7 +30,7 @@ const Search = () => {
 
   return (
     <div className="Search">
-      <SearchBox onSearchInput={fetchSuggestions} />
+      <SearchBox onSearchInput={fetchSuggestions} blurTextInput={status === 'SUCCESS'} />
       <ul className="Movies">
         {status === 'LOADING' && <><MoviePlaceholder /><MoviePlaceholder /><MoviePlaceholder /></>}
         {status === 'SUCCESS' && movies.map((movie) => (

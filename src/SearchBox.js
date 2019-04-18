@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import SearchIcon from 'react-feather/dist/icons/search';
 
-const SearchBox = ({onSearchInput}) => {
+const SearchBox = ({onSearchInput, blurTextInput }) => {
   const inputEl = useRef(null);
 
   const handleFormSubmit = event => {
@@ -16,6 +16,10 @@ const SearchBox = ({onSearchInput}) => {
   useEffect(() => {
     if (inputEl.current) inputEl.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (blurTextInput && inputEl.current) inputEl.current.blur();
+  }, [blurTextInput])
 
   return (
     <form className="SearchBox" action="#" method="get" autoComplete="off" onSubmit={handleFormSubmit}>
