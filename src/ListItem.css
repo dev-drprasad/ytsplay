@@ -40,3 +40,9 @@ h3 {
 .progress {
   grid-area: progress;
 }
+
+.smooth {
+  transform: translateX(calc(100vw));
+  transition: transform .5s ease-out;
+}
+

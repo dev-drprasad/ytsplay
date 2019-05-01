@@ -56,17 +56,18 @@ const Search = ({ onSuccessAdd }) => {
 
   const handleMovieClick = (url) => {
     if (query.type === 'shows') {
-      console.log('query.type :', query.type);
       setShowDetail(url);
       return;
     }
     const searchParams = new URLSearchParams();
     searchParams.append('url', url);
+    searchParams.append('type', query.type);
     const addUrl = `/api/add?${searchParams.toString()}`;
     fetch(addUrl)
     .then((response) => response.json())
     .then((data) => {
       console.log('data :', data);
+      onSuccessAdd();
     })
     .catch((err) => {
       console.log('err :', err);

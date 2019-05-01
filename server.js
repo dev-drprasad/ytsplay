@@ -219,6 +219,32 @@ app.post('/api/login', (req, res) => {
     .catch((err) => res.json({ error: true, message: err.message }));
 });
 
+app.post('/api/remove', (req, res) => {
+  const hash = req.body.hash;
+  const cookieMatch = req.headers.cookie && req.headers.cookie.match(/_session_id=\w+/);
+  if (cookieMatch) {
+    fetch(DELUGE_UI_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': cookieMatch[0],
+      },
+      body: JSON.stringify({
+        method: 'core.remove_torrent',
+        params: [hash, true],
+        id: 0,
+      }),
+    })
+      .then((delugeResponse) => {
+        return delugeResponse.json()
+      })
+      .then((jsonResponse) => {
+        res.json({ ...jsonResponse });
+      })
+      .catch((err) => res.json({ error: true, message: err.message }));
+  }
+});
+
 app.get('/assets/*', (req, res) => {
   res.type('image/jpeg');
   fetch(`https://img.yts.am${req.path}`)
