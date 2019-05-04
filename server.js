@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 const app = express();
 
 const DELUGE_UI_URL = `http://${process.env.DELUGE_UI_HOST || 'localhost:8112'}/json`;
+const YTS_COOKIE = process.env.YTS_COOKIE || '';
 
 app.use(express.json()) ;
 
@@ -117,7 +118,7 @@ app.get('/api/add', (req, res) => {
   const cookieMatch = req.headers.cookie && req.headers.cookie.match(/_session_id=\w+/);
   if (!cookieMatch) return res.json({ error: { message: 'Not authenticated', code: 1 }});
 
-  fetch(url)
+  fetch(url, { headers: {Cookie: YTS_COOKIE }})
     .then((ytsResponse) =>  ytsResponse.text())
     .then((html) => {
       const $ = cheerio.load(html);

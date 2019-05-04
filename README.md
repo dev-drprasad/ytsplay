@@ -49,3 +49,4 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 https://github.com/deluge-torrent/deluge/blob/1a4ac93fbbb865ab6d9fe9fdc50eb58980dc4a01/deluge/core/torrent.py#L1033
+https://css-tricks.com/simple-swipe-with-vanilla-javascript/
