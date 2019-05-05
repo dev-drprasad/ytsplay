@@ -3,7 +3,7 @@ import ListItem from './ListItem';
 
 import './DownloadList.css';
 
-const DownloadList = ({ torrents, onDelete }) => {
+const DownloadList = ({ torrents }) => {
   const handleDelete = (hash) => () => {
     fetch('/api/remove', {
       method: 'POST',
@@ -24,6 +24,26 @@ const DownloadList = ({ torrents, onDelete }) => {
         console.log('err :', err);
       });
   }
+  const handleStream = (hash) => () => {
+    fetch('/api/stream', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        command: 'start',
+        hash,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        return response.json()
+      })
+      .then((data) => {
+        localStorage.setItem(hash, data.result);
+      })
+      .catch(console.error);
+
+  }
   return (
   <ul className="DownloadList">
     {torrents.map((torrent) => (
@@ -33,6 +53,8 @@ const DownloadList = ({ torrents, onDelete }) => {
         status={torrent.state}
         progress={torrent.progress}
         onDelete={handleDelete(torrent.hash)}
+        onStream={handleStream(torrent.hash)}
+        streamUrl={localStorage.getItem(torrent.hash) || null}
       />
       ))
     }

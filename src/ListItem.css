@@ -4,7 +4,8 @@
   grid-template-columns: 50px auto;
   grid-template-areas: 
     "status title"
-    "status progress";
+    "status progress"
+    "stream stream";
   padding: 15px 10px;
   margin: 15px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
@@ -20,6 +21,14 @@ h3 {
 .Status {
   grid-area: status;
   justify-self: center;
+}
+
+.StreamInfo {
+  grid-area: stream;
+  font-size: 0.7em;
+  color: gray;
+  padding: 3px 0;
+  justify-self: right;
 }
 
 /* make background-color visible for pause icon */
@@ -41,8 +50,13 @@ h3 {
   grid-area: progress;
 }
 
-.smooth {
+.smooth-left-to-right {
   transform: translateX(calc(100vw));
+  transition: transform .5s ease-out;
+}
+
+.smooth-right-to-left {
+  transform: translateX(calc(-100vw));
   transition: transform .5s ease-out;
 }
 

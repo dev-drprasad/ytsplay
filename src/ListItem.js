@@ -8,7 +8,7 @@ import ProgressBar from './ProgressBar';
 
 const eventUnify = (e) => e.changedTouches ? e.changedTouches[0] : e;
 
-const ListItem = ({ name, status, progress, onDelete }) => {
+const ListItem = ({ name, status, progress, onDelete, onStream, streamUrl }) => {
   const [lockX, setLockX] = useState(null);
   const ref = useRef(null);
 
@@ -22,8 +22,13 @@ const ListItem = ({ name, status, progress, onDelete }) => {
     const windowWidth = window.innerWidth;
     const dxPercentage = dx/windowWidth;
     if (dxPercentage > 0.5) {
-      ref.current.classList.toggle('smooth');
+      ref.current.classList.toggle('smooth-left-to-right');
       onDelete();
+    }
+    if (dxPercentage < -0.5) {
+      ref.current.classList.toggle('smooth-right-to-left');
+      setTimeout(() => ref.current.classList.toggle('smooth-right-to-left'), 500);
+      onStream();
     }
     setLockX(null);
   }
@@ -37,6 +42,7 @@ const ListItem = ({ name, status, progress, onDelete }) => {
       {(status === 'Seeding'|| status === 'Queued') &&<CheckIcon title="check" size={30} />}
       {status === 'Paused' &&<PlayIcon size={30} />}
     </div>
+    {streamUrl && <div className="StreamInfo">{streamUrl}</div>}
   </li>
 )};
 

@@ -3,6 +3,11 @@ const path = require('path');
 const cheerio = require('cheerio');
 const fetch = require('node-fetch');
 const app = express();
+const httpServer = require('http-server');
+
+const fs = require('fs').promises
+
+const { exec } = require('child_process');
 
 const DELUGE_UI_URL = `http://${process.env.DELUGE_UI_HOST || 'localhost:8112'}/json`;
 const YTS_COOKIE = process.env.YTS_COOKIE || '';
@@ -19,6 +24,13 @@ app.use(function(req, res, next) {
 
 
 app.use(express.static(path.join(__dirname, 'build')));
+
+const streamServer = httpServer.createServer({ root: path.join(process.env.DOWNLOAD_DIR, 'stream')});
+streamServer.listen(process.env.STREAM_PORT);
+
+process.on('error', console.error);
+
+
 
 app.get('/ping', function (req, res) {
  return res.send('pong');
@@ -244,6 +256,62 @@ app.post('/api/remove', (req, res) => {
       })
       .catch((err) => res.json({ error: true, message: err.message }));
   }
+});
+
+app.post('/api/stream', (req, res) => {
+  const command = req.body.command;
+  const hash = req.body.hash;
+  const cookieMatch = req.headers.cookie && req.headers.cookie.match(/_session_id=\w+/);
+  
+  if (!cookieMatch) return res.status(401).end();
+  
+  if (!hash) return res.status(400).end();
+
+    fetch(DELUGE_UI_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': cookieMatch[0],
+      },
+      body: JSON.stringify({
+        method: 'web.get_torrent_files',
+        params: [hash],
+        id: 0,
+      }),
+    })
+      .then((delugeResponse) => {
+        return delugeResponse.json()
+      })
+      .then((jsonResponse) => {
+          const mediaFilePath = Object.entries(Object.values(jsonResponse.result.contents)[0].contents).reduce((acc, [name, item]) => {
+            console.log('name :', name);
+            if (name.match(/.(mp4|mkv)$/)) {
+              return item.path;
+            } else {
+              return acc;
+            }
+          }, null);
+          
+          if (mediaFilePath) {
+            console.log('mediaFilePath :', mediaFilePath);
+            fs.mkdir(path.join(process.env.DOWNLOAD_DIR, 'stream')).catch(console.error);
+            fs.readdir(path.join(process.env.DOWNLOAD_DIR, 'stream'))
+              .then((filenames) => filenames.length)
+              .then(lastStreamNo => {
+                fs.symlink(path.join(process.env.DOWNLOAD_DIR, mediaFilePath), path.join(process.env.DOWNLOAD_DIR, 'stream', `stream${lastStreamNo + 1}`))
+                  .then((symlinkPath) => {
+                    console.log('symlinkPath :', symlinkPath);
+                    res.json({ result: `/stream${lastStreamNo + 1}` });
+                  })
+                  .catch((err) => res.json({error: err.message}))
+              }).catch((err) => res.json({error: err.message}))
+          } else {
+            return res.json({ error: 'No media file found'})
+          }
+
+      })
+      .catch((err) => res.json({ error: true, message: err.message }));
+  
 });
 
 app.get('/assets/*', (req, res) => {

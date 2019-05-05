@@ -5,6 +5,7 @@
   "proxy": "http://localhost:8080",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "http-server": "^0.11.1",
     "node-fetch": "^2.3.0",
     "react": "^16.8.0-alpha.0",
     "react-dom": "^16.8.0-alpha.0",
