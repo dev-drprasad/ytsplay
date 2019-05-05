@@ -18,18 +18,13 @@ const App = () => {
         credentials: 'include',
       })
         .then((response) => {
+          if (response.status === 401) setLoggedIn(false);
           if (!response.ok) throw Error(response.statusText);
           return response.json()
         })
         .then((data) => {
           console.log('data :', data);
-          if (data.error) {
-            // Not authenticated
-            if (data.error.code === 1) setLoggedIn(false);
-          }
-          
-          // result.torrents will null when daemon is not running 
-          setTorrents(Object.values(data.result.torrents || []));
+          setTorrents(data.result);
         })
         .catch((error) => {
           setTorrents([]);

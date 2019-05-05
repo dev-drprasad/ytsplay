@@ -39,7 +39,7 @@ const DownloadList = ({ torrents }) => {
         return response.json()
       })
       .then((data) => {
-        localStorage.setItem(hash, data.result);
+        // localStorage.setItem(hash, data.result);
       })
       .catch(console.error);
 
@@ -54,7 +54,7 @@ const DownloadList = ({ torrents }) => {
         progress={torrent.progress}
         onDelete={handleDelete(torrent.hash)}
         onStream={handleStream(torrent.hash)}
-        streamUrl={localStorage.getItem(torrent.hash) || null}
+        streamUrl={torrent.streamNo || null}
       />
       ))
     }

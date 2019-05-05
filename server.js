@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-const streamServer = httpServer.createServer({ root: path.join(process.env.DOWNLOAD_DIR, 'stream')});
+const streamServer = httpServer.createServer({ root: '/stream' });
 streamServer.listen(process.env.STREAM_PORT);
 
 process.on('error', console.error);
@@ -201,9 +201,18 @@ app.get('/api/list', function(req, res) {
     })
       .then((delugeResponse) => delugeResponse.json())
       .then((jsonResponse) => {
-        res.json(jsonResponse)
+        if (jsonResponse.error) throw Error(jsonResponse.error.message);
+        const torrents = Object.values((jsonResponse.result || {}).torrents || {})
+        return Promise.all(torrents.map((torrent) => fs.readFile(`/tmp/${torrent.hash}`,  'utf8').then((streamNo) => ({ ...torrent, streamNo: Number(streamNo) })).catch(() => torrent)))
       })
-      .catch((err) => res.json({ error: true, message: err.message }));
+      .then((torrents) => {
+        res.json({ result: torrents })
+      })
+      .catch((err) => {
+        if (err.message === 'Not authenticated') return res.status(401).end();
+        
+        return res.status(500).json({ error: err.message });
+      });
   }
 });
 
@@ -252,8 +261,11 @@ app.post('/api/remove', (req, res) => {
         return delugeResponse.json()
       })
       .then((jsonResponse) => {
-        res.json({ ...jsonResponse });
+        return fs.readFile(path.join('/tmp', hash), 'utf8')
+          .then((streamNo) => fs.unlink(path.join('/stream', `stream${streamNo}`)))
+          .then(() => fs.unlink(path.join('/tmp', hash)))
       })
+      .then(() => res.json({ result: true }))
       .catch((err) => res.json({ error: true, message: err.message }));
   }
 });
@@ -294,14 +306,30 @@ app.post('/api/stream', (req, res) => {
           
           if (mediaFilePath) {
             console.log('mediaFilePath :', mediaFilePath);
-            fs.mkdir(path.join(process.env.DOWNLOAD_DIR, 'stream')).catch(console.error);
-            fs.readdir(path.join(process.env.DOWNLOAD_DIR, 'stream'))
-              .then((filenames) => filenames.length)
-              .then(lastStreamNo => {
-                fs.symlink(path.join(process.env.DOWNLOAD_DIR, mediaFilePath), path.join(process.env.DOWNLOAD_DIR, 'stream', `stream${lastStreamNo + 1}`))
-                  .then((symlinkPath) => {
-                    console.log('symlinkPath :', symlinkPath);
-                    res.json({ result: `/stream${lastStreamNo + 1}` });
+            fs.mkdir('/stream').catch(console.error);
+            fs.mkdir(path.join('/tmp')).catch(console.error);
+            fs.readdir('/stream')
+              .then((filenames) => {
+                const bookedStreams = filenames.map((filename) => filename.slice(-1)[0]).filter(Boolean).map(Number);
+                let streamNo = 1;
+                if (bookedStreams.length) {
+                  console.log('bookedStreams :', bookedStreams);
+                  const maxStream = Math.max(...bookedStreams);
+                  for (let i = 1; i <= maxStream + 1; i++) {
+                    if (!bookedStreams.includes(i)) {
+                      streamNo = i;
+                      break;
+                    };
+
+                  }
+                }
+                return streamNo
+              })
+              .then(streamNo => {
+                fs.symlink(path.join(process.env.DOWNLOAD_DIR, mediaFilePath), path.join('/stream', `stream${streamNo}`))
+                  .then(() => {
+                    fs.writeFile(path.join('/tmp', hash), streamNo)
+                    res.json({ result: streamNo });
                   })
                   .catch((err) => res.json({error: err.message}))
               }).catch((err) => res.json({error: err.message}))

@@ -25,10 +25,11 @@ h3 {
 
 .StreamInfo {
   grid-area: stream;
-  font-size: 0.7em;
+  font-size: 0.6em;
   color: gray;
-  padding: 3px 0;
-  justify-self: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 /* make background-color visible for pause icon */

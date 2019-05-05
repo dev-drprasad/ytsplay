@@ -5,6 +5,7 @@ import PlayIcon from 'react-feather/dist/icons/play-circle';
 
 import './ListItem.css';
 import ProgressBar from './ProgressBar';
+import SignalAnimation from './SignalAnimation';
 
 const eventUnify = (e) => e.changedTouches ? e.changedTouches[0] : e;
 
@@ -42,7 +43,7 @@ const ListItem = ({ name, status, progress, onDelete, onStream, streamUrl }) => 
       {(status === 'Seeding'|| status === 'Queued') &&<CheckIcon title="check" size={30} />}
       {status === 'Paused' &&<PlayIcon size={30} />}
     </div>
-    {streamUrl && <div className="StreamInfo">{streamUrl}</div>}
+    {streamUrl && <div className="StreamInfo"><SignalAnimation />{streamUrl}</div>}
   </li>
 )};
 
