@@ -1,7 +1,7 @@
 .ListItem {
   display: grid;
   background-color: #ffffff;
-  grid-template-columns: 50px auto;
+  grid-template-columns: 36px auto;
   grid-template-areas: 
     "status title"
     "status progress"
@@ -20,7 +20,6 @@ h3 {
 
 .Status {
   grid-area: status;
-  justify-self: center;
 }
 
 .StreamInfo {
