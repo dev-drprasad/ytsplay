@@ -1,6 +1,6 @@
 .MoviePlaceholder {
   padding: 15px;
-  border-bottom: 1px solid #F7F9FC;
+  border-bottom: 1px solid #f7f9fc;
 }
 
 .ShimmerInner {
@@ -50,16 +50,15 @@
 }
 
 .CurveShape::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
   box-shadow: 0 0 0 10px #ffffff;
   height: 100%;
   width: 100%;
-  border-radius:999px;
+  border-radius: 999px;
 }
-
 
 .ShimmerLine {
   width: 100%;
@@ -70,7 +69,12 @@
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
   animation-name: shimmer;
-  background: linear-gradient(to right, rgb(245, 248, 252) 10%, rgba(230, 236, 247, 0.65) 20%, rgb(245, 248, 252) 30%);
+  background: linear-gradient(
+    to right,
+    rgb(245, 248, 252) 10%,
+    rgba(230, 236, 247, 0.65) 20%,
+    rgb(245, 248, 252) 30%
+  );
 }
 
 .AnimateBackground {
@@ -85,13 +89,13 @@
   height: 96px;
 }
 
-@keyframes shimmer{
-  0%{
+@keyframes shimmer {
+  0% {
     transform: translateX(-100%) translateY(0%);
     background-size: 100%;
     opacity: 1;
   }
-  100%{
+  100% {
     transform: translateX(200%) translateY(0%);
     background-size: 500%;
     opacity: 0;
@@ -100,5 +104,4 @@
 
 .Shimmer {
   background-color: #ffffff;
-  
 }

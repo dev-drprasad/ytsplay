@@ -1,17 +1,16 @@
-import React from 'react';
+import React from "react";
 
-import './SignalAnimation.css';
-
+import "./SignalAnimation.css";
 
 const SignalAnimation = () => {
   return (
     <div className="beacon-wrapper">
-  <span className="signal beacon--epicentre"></span>
-  <span className="signal signal--wave"></span>
-  <span className="signal signal--wave signal--delay"></span>
-</div>
-  )
-}
+      <span className="signal beacon--epicentre" />
+      <span className="signal signal--wave" />
+      <span className="signal signal--wave signal--delay" />
+    </div>
+  );
+};
 
 export default SignalAnimation;
 

@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react';
-import SearchIcon from 'react-feather/dist/icons/search';
+import React, { useRef, useEffect } from "react";
+import SearchIcon from "react-feather/dist/icons/search";
 
-const SearchBox = ({onSearchInput, blurTextInput }) => {
+const SearchBox = ({ onSearchInput, blurTextInput }) => {
   const inputEl = useRef(null);
 
   const handleFormSubmit = event => {
@@ -19,17 +19,25 @@ const SearchBox = ({onSearchInput, blurTextInput }) => {
 
   useEffect(() => {
     if (blurTextInput && inputEl.current) inputEl.current.blur();
-  }, [blurTextInput])
+  }, [blurTextInput]);
 
   return (
-    <form className="SearchBox" action="#" method="get" autoComplete="off" onSubmit={handleFormSubmit}>
+    <form
+      className="SearchBox"
+      action="#"
+      method="get"
+      autoComplete="off"
+      onSubmit={handleFormSubmit}
+    >
       <div className="TextInputGroup">
         <input type="text" name="query" id="query" ref={inputEl} />
-        <button type="submit"><SearchIcon size={20} /></button>
+        <button type="submit">
+          <SearchIcon size={20} />
+        </button>
       </div>
       <div className="RadioGroup">
         <label>
-          <input type="radio" name="type" value="movies" defaultChecked/>
+          <input type="radio" name="type" value="movies" defaultChecked />
           Movies
         </label>
         <label>
@@ -37,7 +45,6 @@ const SearchBox = ({onSearchInput, blurTextInput }) => {
           TV Shows
         </label>
       </div>
-
     </form>
   );
 };

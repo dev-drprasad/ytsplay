@@ -3,7 +3,7 @@
 }
 
 .SearchBox .TextInputGroup {
-    position: relative;
+  position: relative;
 }
 
 .SearchBox .RadioGroup {
@@ -23,10 +23,10 @@
   position: absolute;
   right: 0;
   margin: 4px;
-  background-color: #42BCF5;
+  background-color: #42bcf5;
   height: 36px;
   width: 36px;
-  color: #F7F9FC;
+  color: #f7f9fc;
   border-radius: 50%;
   display: inline-flex;
   justify-content: center;
@@ -36,7 +36,7 @@
 .SearchBox [name="query"] {
   width: 100%;
   /* background-color: #ebf0f7; */
-  background-color: #F7F9FC;
+  background-color: #f7f9fc;
   font-size: 18px;
   height: 44px;
   border: none;

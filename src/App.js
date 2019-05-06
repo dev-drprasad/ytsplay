@@ -1,48 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import SearchModal from './SearchModal';
-import AddTorrentButton from './AddTorrentButton';
-import Login from './Login';
-import DownloadList from './DownloadList';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import SearchModal from "./SearchModal";
+import AddTorrentButton from "./AddTorrentButton";
+import Login from "./Login";
+import DownloadList from "./DownloadList";
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(() => !!document.cookie.match(/_session_id=\w+/));
+  const [loggedIn, setLoggedIn] = useState(
+    () => !!document.cookie.match(/_session_id=\w+/)
+  );
   const [torrents, setTorrents] = useState([]);
   const [showSearchModal, setShowSearchModal] = useState(false);
 
   useEffect(() => {
     if (!loggedIn) return;
-    
+
     const getTorrents = () => {
-      fetch('/api/list', {
-        credentials: 'include',
+      fetch("/api/list", {
+        credentials: "include",
       })
-        .then((response) => {
+        .then(response => {
           if (response.status === 401) setLoggedIn(false);
           if (!response.ok) throw Error(response.statusText);
-          return response.json()
+          return response.json();
         })
-        .then((data) => {
-          console.log('data :', data);
+        .then(data => {
+          console.log("data :", data);
           setTorrents(data.result);
         })
-        .catch((error) => {
+        .catch(error => {
           setTorrents([]);
         });
-    }
+    };
     getTorrents();
     const timer = setInterval(getTorrents, 5000);
     return () => clearInterval(timer);
   }, [loggedIn]);
-  
+
   return (
     <div className="App">
-      {loggedIn
-      ? (
+      {loggedIn ? (
         <>
           <DownloadList torrents={torrents} />
           <AddTorrentButton onClick={() => setShowSearchModal(true)} />
-          <SearchModal isOpen={showSearchModal} onClose={() => setShowSearchModal(false)} />
+          <SearchModal
+            isOpen={showSearchModal}
+            onClose={() => setShowSearchModal(false)}
+          />
         </>
       ) : (
         <Login onLogIn={() => setLoggedIn(true)} />

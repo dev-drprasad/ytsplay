@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import './MovieItem.css';
+import "./MovieItem.css";
 
 const MovieItem = ({ imageUrl, name, year, url, onClick }) => {
   return (
