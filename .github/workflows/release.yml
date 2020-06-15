@@ -14,5 +14,6 @@ jobs:
         uses: dev-drprasad/delete-older-releases@v0.1.0
         with:
           keep_latest: 2
+          repo: dev-drprasad/hoodiee
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
